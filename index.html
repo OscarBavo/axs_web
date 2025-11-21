@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario AXS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="../inventario/images/axs_logo.png">
+</head>
+<body>
+    <div class="container">
+        <div class="carousel-container">
+            <div class="carousel" id="carousel">
+                <!-- Slide 1 -->
+                <div class="carousel-slide active">
+                    <img src="../inventario/images/balam.jpg" alt="Bicicletas de montaña">
+                    <div class="carousel-overlay">
+                        <h2>Bicicletas de Montaña</h2>
+                        <p>Descubre nuestra colección de bicicletas para aventuras extremas</p>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <img src="../inventario/images/copan.jpg" alt="Bicicletas de ruta">
+                    <div class="carousel-overlay">
+                        <h2>Bicicletas de Ruta</h2>
+                        <p>Velocidad y rendimiento para los ciclistas más exigentes</p>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <img src="../inventario/images/xco.JPG" alt="Bicicletas urbanas">
+                    <div class="carousel-overlay">
+                        <h2>Bicicletas XCO</h2>
+                        <p>Perfectas rodar en la montaña</p>
+                    </div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="carousel-slide">
+                    <img src="../inventario/images/especial.jpg" alt="Ofertas especiales">
+                    <div class="carousel-overlay">
+                        <h2>Ofertas Especiales</h2>
+                        <p>Aprovecha nuestras promociones de temporada</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botones de navegación -->
+            <button class="carousel-btn prev" onclick="changeSlide(-1)">❮</button>
+            <button class="carousel-btn next" onclick="changeSlide(1)">❯</button>
+            
+            <!-- Indicadores -->
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+
+        <div class="filters" id="filters" style="display: none;">
+            <div class="filter-group">
+                <label for="modelFilter">Modelo</label>
+                <select id="modelFilter">
+                    <option value="">Todos los modelos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="tallaFilter">Talla</label>
+                <select id="tallaFilter">
+                    <option value="">Todas las tallas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="colorFilter">Color</label>
+                <select id="colorFilter">
+                    <option value="">Todos los colores</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="rodadaFilter">Rodada</label>
+                <select id="rodadaFilter">
+                    <option value="">Todas las rodadas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="almacenFilter">Almacén</label>
+                <select id="almacenFilter">
+                    <option value="">Todos los almacenes</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat-item">
+                <div class="stat-value" id="totalBikes">0</div>
+                <div class="stat-label">Bicicletas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalStock">0</div>
+                <div class="stat-label">Stock Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalModels">0</div>
+                <div class="stat-label">Modelos</div>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="loading">Cargando inventario...</div>
+        </div>
+
+        <div class="inventory-grid" id="inventoryGrid"></div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>🚴 Bicicletas AXS</h3>
+                <p>Tu tienda de confianza para bicicletas</p>
+            </div>
+
+            <div class="social-links">
+                <!-- Facebook -->
+                <a href="https://facebook.com/profile.php?id=61576284535995&sk=about" target="_blank" class="social-link facebook" title="Síguenos en Facebook">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com/axs_bikes/" target="_blank" class="social-link instagram" title="Síguenos en Instagram">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+
+                <!-- WhatsApp con número -->
+                <a href="https://wa.me/521234567890" target="_blank" class="whatsapp-number" title="Contáctanos por WhatsApp">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    +52 123 456 7890
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024 Bicicletas Inventario. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        "use strict";
+
+        // ⚠️ CONFIGURA TU URL AQUÍ ⚠️
+        const API_ENDPOINT = 'https://axs-api.ngrok.app/api/axs/belfort/sheet?sheet_url=https://docs.google.com/spreadsheets/d/1EJEwASennObugypCCGc_YDBHvmECAXT1Nqp4RxHFi3k/edit?usp=sharing&worksheet_name=ExistenciaCliente';
+
+        // Estado de la aplicación
+        let allBikes = [];
+        let filteredBikes = [];
+
+        // Elementos del DOM
+        const contentDiv = document.getElementById('content');
+        const inventoryGrid = document.getElementById('inventoryGrid');
+        const filtersDiv = document.getElementById('filters');
+        const statsDiv = document.getElementById('stats');
+
+        // Filtros
+        const modelFilter = document.getElementById('modelFilter');
+        const tallaFilter = document.getElementById('tallaFilter');
+        const colorFilter = document.getElementById('colorFilter');
+        const rodadaFilter = document.getElementById('rodadaFilter');
+        const almacenFilter = document.getElementById('almacenFilter');
+
+        // Función para cargar el inventario
+        async function loadInventory() {
+            try {
+                console.log('Intentando cargar desde:', API_ENDPOINT);
+                
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors'
+                });
+                
+                console.log('Respuesta recibida:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error('Error HTTP: ' + response.status + ' - ' + response.statusText);
+                }
+
+                const data = await response.json();
+                console.log('Datos recibidos:', data);
+
+                if (data.errorResponse.EsError) {
+                    throw new Error(data.errorResponse.Message);
+                }
+
+                allBikes = data.inventoryList;
+                filteredBikes = [...allBikes];
+
+                console.log('Total de bicicletas cargadas:', allBikes.length);
+
+                contentDiv.style.display = 'none';
+                filtersDiv.style.display = 'flex';
+                statsDiv.style.display = 'flex';
+
+                populateFilters();
+                updateStats();
+                displayBikes();
+
+            } catch (error) {
+                console.error('Error detallado:', error);
+                
+                let errorMessage = '';
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    errorMessage = '<h2>❌ Error de Conexión (CORS)</h2>' +
+                        '<p><strong>El servidor Python necesita configurar CORS.</strong></p>' +
+                        '<p>Agrega esto a tu servidor Flask:</p>' +
+                        '<pre style="background:#2d2d2d;color:#fff;padding:15px;border-radius:8px;text-align:left;">from flask_cors import CORS\nCORS(app)</pre>' +
+                        '<p>Instala con: <code>pip install flask-cors</code></p>';
+                } else {
+                    errorMessage = '<h2>Error al cargar el inventario</h2>' +
+                        '<p><strong>Mensaje:</strong> ' + error.message + '</p>' +
+                        '<p><strong>URL:</strong> ' + API_ENDPOINT + '</p>' +
+                        '<p>Abre la Consola (F12) para más detalles.</p>';
+                }
+                
+                contentDiv.innerHTML = '<div class="error">' + errorMessage + '</div>';
+            }
+        }
+
+        // Poblar filtros con valores únicos
+        function populateFilters() {
+            const modelos = [...new Set(allBikes.map(b => b.Modelo))].sort();
+            const tallas = [...new Set(allBikes.map(b => b.Talla))].sort();
+            const colores = [...new Set(allBikes.map(b => b.Color))].sort();
+            const rodadas = [...new Set(allBikes.map(b => b.Rodada))].sort();
+            const almacenes = [...new Set(allBikes.map(b => b.Almacen))].sort();
+
+            populateSelect(modelFilter, modelos);
+            populateSelect(tallaFilter, tallas);
+            populateSelect(colorFilter, colores);
+            populateSelect(rodadaFilter, rodadas);
+            populateSelect(almacenFilter, almacenes);
+        }
+
+        function populateSelect(select, values) {
+            values.forEach(function(value) {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                select.appendChild(option);
+            });
+        }
+
+        // Aplicar filtros
+        function applyFilters() {
+            filteredBikes = allBikes.filter(function(bike) {
+                return (
+                    (!modelFilter.value || bike.Modelo === modelFilter.value) &&
+                    (!tallaFilter.value || bike.Talla === tallaFilter.value) &&
+                    (!colorFilter.value || bike.Color === colorFilter.value) &&
+                    (!rodadaFilter.value || bike.Rodada === rodadaFilter.value) &&
+                    (!almacenFilter.value || bike.Almacen === almacenFilter.value)
+                );
+            });
+
+            updateStats();
+            displayBikes();
+        }
+
+        // Actualizar estadísticas
+        function updateStats() {
+            const totalBikesEl = document.getElementById('totalBikes');
+            const totalStockEl = document.getElementById('totalStock');
+            const totalModelsEl = document.getElementById('totalModels');
+
+            let totalStock = 0;
+            for (let i = 0; i < filteredBikes.length; i++) {
+                totalStock += parseFloat(filteredBikes[i].Cantidad);
+            }
+            
+            const uniqueModels = new Set(filteredBikes.map(function(b) { return b.Modelo; })).size;
+
+            totalBikesEl.textContent = filteredBikes.length.toString();
+            totalStockEl.textContent = totalStock.toFixed(0);
+            totalModelsEl.textContent = uniqueModels.toString();
+        }
+
+        // Mostrar bicicletas
+        function displayBikes() {
+            if (filteredBikes.length === 0) {
+                inventoryGrid.innerHTML = '<div class="no-results">No se encontraron bicicletas con los filtros seleccionados</div>';
+                return;
+            }
+
+            let html = '';
+            for (let i = 0; i < filteredBikes.length; i++) {
+                const bike = filteredBikes[i];
+                html += '<div class="bike-card">' +
+                    '<img src="' + bike.Imagen + '" alt="' + bike.Modelo + '" class="bike-image" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22250%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22300%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2218%22%3EImagen no disponible%3C/text%3E%3C/svg%3E\'">' +
+                    '<div class="bike-details">' +
+                        '<div class="bike-model">' + bike.Modelo + '</div>' +
+                        '<div class="bike-info">' +
+                            '<div class="info-item"><span class="info-label">Talla</span><span class="info-value">' + bike.Talla + '"</span></div>' +
+                            '<div class="info-item"><span class="info-label">Rodada</span><span class="info-value">' + bike.Rodada + '"</span></div>' +
+                            '<div class="info-item"><span class="info-label">Color</span><span class="info-value">' + bike.Color + '</span></div>' +
+                            '<div class="info-item"><span class="info-label">Stock</span><span class="info-value">' + parseFloat(bike.Cantidad).toFixed(0) + ' uds</span></div>' +
+                        '</div>' +
+                        '<div class="bike-almacen">📦 Almacén: ' + bike.Almacen + '</div>' +
+                        '<div class="bike-quantity">Disponible: ' + parseFloat(bike.Cantidad).toFixed(0) + ' unidades</div>' +
+                    '</div>' +
+                '</div>';
+            }
+            inventoryGrid.innerHTML = html;
+        }
+
+        // Event listeners para filtros
+        modelFilter.addEventListener('change', applyFilters);
+        tallaFilter.addEventListener('change', applyFilters);
+        colorFilter.addEventListener('change', applyFilters);
+        rodadaFilter.addEventListener('change', applyFilters);
+        almacenFilter.addEventListener('change', applyFilters);
+
+        // Cargar inventario al iniciar
+        loadInventory();
+
+        // =====================
+        // CARRUSEL DE IMÁGENES
+        // =====================
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+        const dotsContainer = document.getElementById('carouselDots');
+        let autoSlideInterval;
+
+        // Crear indicadores (dots)
+        function createDots() {
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = function() { goToSlide(i); };
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Ir a slide específico
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            document.querySelectorAll('.carousel-dot')[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            if (currentSlide >= totalSlides) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.carousel-dot')[currentSlide].classList.add('active');
+        }
+
+        // Cambiar slide (siguiente/anterior)
+        function changeSlide(direction) {
+            goToSlide(currentSlide + direction);
+            resetAutoSlide();
+        }
+
+        // Auto-slide cada 5 segundos
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(function() {
+                goToSlide(currentSlide + 1);
+            }, 5000);
+        }
+
+        // Reiniciar auto-slide
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        // Inicializar carrusel
+        createDots();
+        startAutoSlide();
+
+        // Event listeners para botones del carrusel
+        document.getElementById('btnPrev').addEventListener('click', function() {
+            changeSlide(-1);
+        });
+        document.getElementById('btnNext').addEventListener('click', function() {
+            changeSlide(1);
+        });
+
+    </script>
+</body>
+</html>
